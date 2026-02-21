@@ -1,10 +1,10 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
+import { useDevAuth } from "@/lib/dev-auth";
 import { useState } from "react";
 
 export default function ProfileClient() {
-  const { user, isLoaded } = useUser();
+  const { user, isLoaded } = useDevAuth();
   const [role, setRole] = useState<"buyer" | "seller">("buyer");
 
   if (!isLoaded) {

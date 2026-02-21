@@ -1,19 +1,29 @@
 "use client";
 
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider, useAuth } from "@clerk/nextjs";
 import { TRPCProvider } from "@/lib/trpc";
+import { DevAuthProvider } from "@/lib/dev-auth";
+
+function AuthenticatedTRPCProvider({ children }: { children: React.ReactNode }) {
+  const { getToken } = useAuth();
+  return <TRPCProvider getToken={getToken}>{children}</TRPCProvider>;
+}
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
-  // During build (SSG) without Clerk keys, render children without Clerk
+  // Dev mode: no Clerk keys, use simple dev auth
   if (!publishableKey) {
-    return <TRPCProvider>{children}</TRPCProvider>;
+    return (
+      <DevAuthProvider>
+        <TRPCProvider>{children}</TRPCProvider>
+      </DevAuthProvider>
+    );
   }
 
   return (
     <ClerkProvider publishableKey={publishableKey}>
-      <TRPCProvider>{children}</TRPCProvider>
+      <AuthenticatedTRPCProvider>{children}</AuthenticatedTRPCProvider>
     </ClerkProvider>
   );
 }

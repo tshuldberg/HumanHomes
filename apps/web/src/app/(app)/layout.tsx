@@ -1,14 +1,49 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { UserButton } from "@clerk/nextjs";
+import { usePathname, useRouter } from "next/navigation";
+import { useDevAuth } from "@/lib/dev-auth";
 
 const navItems = [
   { href: "/discover", label: "Discover", icon: CompassIcon },
   { href: "/messages", label: "Messages", icon: ChatIcon },
   { href: "/profile", label: "Profile", icon: PersonIcon },
 ];
+
+function DevUserButton() {
+  const { user, signOut, isSignedIn, isLoaded } = useDevAuth();
+  const router = useRouter();
+
+  if (!isLoaded) return null;
+
+  if (!isSignedIn) {
+    return (
+      <Link
+        href="/dev-login"
+        className="px-4 py-2 text-sm font-semibold bg-terracotta-500 text-white rounded-xl hover:bg-terracotta-600 transition-colors"
+      >
+        Sign In
+      </Link>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => {
+        signOut();
+        router.push("/");
+      }}
+      className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-medium text-charcoal-600 hover:bg-charcoal-50 transition-colors"
+    >
+      <div className="w-7 h-7 rounded-full bg-terracotta-100 flex items-center justify-center">
+        <span className="text-xs font-bold text-terracotta-600">
+          {user?.firstName?.[0] ?? "A"}
+        </span>
+      </div>
+      Sign Out
+    </button>
+  );
+}
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -50,7 +85,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             >
               Sell Your Home
             </Link>
-            <UserButton afterSignOutUrl="/" />
+            <DevUserButton />
           </div>
         </div>
       </header>

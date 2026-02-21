@@ -77,13 +77,13 @@ export default function HomePage() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
-            href="/sign-up"
+            href="/discover"
             className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold bg-terracotta-500 text-white rounded-xl hover:bg-terracotta-600 transition-colors shadow-soft"
           >
             Discover Homes
           </Link>
           <Link
-            href="/sign-up"
+            href="/discover"
             className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold border-2 border-terracotta-400 text-terracotta-600 rounded-xl hover:bg-terracotta-50 transition-colors"
           >
             List Your Home
