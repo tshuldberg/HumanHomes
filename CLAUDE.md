@@ -1,0 +1,141 @@
+# CLAUDE.md — HumanHomes
+
+## Overview
+
+HumanHomes is a full real estate operating system that democratizes homeownership. It replaces agents, MLS gatekeeping, and middlemen with direct buyer-seller connections, community verification, open market intelligence, and human-first home stories. Web + iOS + Android.
+
+## Stack
+
+- **Language:** TypeScript 5.9+ (full stack)
+- **Web:** Next.js 15 (App Router, RSC, SSR/SSG/ISR)
+- **Mobile:** React Native + Expo (SDK 54+, Expo Router, New Architecture)
+- **API:** tRPC + Fastify
+- **Database:** PostgreSQL + Drizzle ORM (PostGIS for geospatial, native FTS)
+- **Auth:** Clerk (identity verification, multi-platform SDKs)
+- **Real-time:** Supabase Realtime (MVP) > Ably (scale)
+- **Chat:** Stream Chat SDK
+- **Video:** Daily.co SDK
+- **Search:** PostgreSQL FTS (MVP) > Meilisearch (scale)
+- **Storage:** Cloudflare R2 (zero egress)
+- **Jobs:** Inngest (durable workflows)
+- **Maps:** react-map-gl + MapLibre GL (rendering) + Mapbox (geocoding)
+- **Styling:** NativeWind v5 (Tailwind CSS cross-platform)
+- **UI Components:** Gluestack UI v3
+- **State:** Zustand (client) + TanStack Query (server)
+- **Monorepo:** Turborepo + pnpm workspaces
+- **Identity Verification:** Persona (startup program)
+- **E-Signatures:** Dropbox Sign API
+- **Public Records:** ATTOM Data API
+- **Hosting:** Railway (MVP) > AWS (scale)
+
+## Key Commands
+
+```bash
+# Monorepo (from root)
+pnpm install                   # Install all dependencies
+pnpm dev                       # Run all apps in dev mode
+pnpm build                     # Build all apps and packages
+pnpm test                      # Run all tests
+pnpm lint                      # Lint all packages
+pnpm typecheck                 # Type check all packages
+
+# Web app (apps/web/)
+pnpm --filter web dev          # Next.js dev server
+pnpm --filter web build        # Production build
+
+# Mobile app (apps/mobile/)
+pnpm --filter mobile start     # Expo dev server
+pnpm --filter mobile ios       # Run on iOS simulator
+pnpm --filter mobile android   # Run on Android emulator
+
+# API (apps/api/)
+pnpm --filter api dev          # Fastify + tRPC dev server
+pnpm --filter api build        # Build API
+
+# Database (packages/db/)
+pnpm --filter db generate      # Generate Drizzle migrations
+pnpm --filter db migrate       # Run migrations
+pnpm --filter db push          # Push schema to database
+```
+
+## Architecture
+
+```
+humanhomes/
+  apps/
+    web/              # Next.js 15 (App Router) — primary web experience
+    mobile/           # Expo (React Native + Expo Router) — iOS + Android
+    api/              # Fastify + tRPC server — API layer
+  packages/
+    db/               # Drizzle ORM schema, migrations, seed
+    shared/           # Shared types, Zod validators, business logic
+    trpc/             # tRPC router definitions (shared between api and clients)
+    ui/               # Shared UI components (NativeWind-styled, cross-platform)
+    api-client/       # tRPC typed client for web and mobile
+    config/           # Shared ESLint, TypeScript, Prettier configs
+  docs/
+    plans/            # Design documents, research, specs, roadmap
+  turbo.json          # Turborepo pipeline config
+  pnpm-workspace.yaml # Workspace definition
+```
+
+**Data flow:** Client > tRPC > Fastify > Drizzle > PostgreSQL (Supabase-managed)
+
+**Key architectural decisions:**
+- tRPC for end-to-end type safety (no REST/GraphQL for internal clients)
+- Drizzle over Prisma for SQL control, PostGIS support, zero codegen
+- Cloudflare R2 over S3 for zero-egress media storage
+- Stream Chat SDK over custom messaging for moderation and offline support
+- Resonance engine (private preference sorting) never filters results, only reorders
+
+## Git Workflow
+
+- **Branch naming:** `feature/`, `fix/`, `refactor/`, `docs/` prefixes
+- **Commit format:** Conventional Commits (`feat:`, `fix:`, `refactor:`, `docs:`, `chore:`)
+- **Default branch:** `main`
+- **Merge strategy:** Squash merge to `main`
+
+## Design Documents
+
+All design documentation lives in `docs/plans/`:
+
+| Document | Purpose |
+|----------|---------|
+| `2026-02-20-humanhomes-product-spec.md` | Authoritative product specification (start here) |
+| `2026-02-20-humanhomes-design.md` | Original vision and mission document |
+| `2026-02-20-humanhomes-features-and-flows.md` | Complete feature inventory and user journey flows |
+| `2026-02-20-humanhomes-ux-design.md` | UX flows, wireframe concepts, interaction patterns, visual design |
+| `2026-02-20-humanhomes-implementation-roadmap.md` | Technical feasibility, dependency graph, phased build plan, risk register |
+| `2026-02-20-frontend-mobile-stack.md` | Frontend and mobile tech stack research |
+| `2026-02-20-backend-api-stack.md` | Backend and API tech stack research |
+| `2026-02-20-data-pipeline-infrastructure.md` | Data pipeline, infrastructure, and cost analysis |
+
+## Revenue Model
+
+Inverted marketplace: professionals (realtors, brokers, inspectors, attorneys) pay to be listed and respond to user requests. Core functionality (listing, searching, messaging, basic tools) is free for users. Additional revenue from premium analytics, AI pricing guidance, and optional closing coordination services.
+
+## Key Design Principles
+
+1. **Stories before statistics** — Home Story excerpts appear above beds/baths/sqft on listing cards
+2. **Never subtract, always refine** — Resonance filters reorder results, never remove them
+3. **People over properties** — Buyer/seller profiles are central to every interaction
+4. **No middlemen** — Direct buyer-seller connection through the platform
+5. **Anti-cookie-cutter** — Celebrate neighborhood character, yard space, walkability over density
+6. **Collective paths to ownership** — Groups, friends, and communities deserve homeownership tools too
+7. **Graceful transitions** — Aging homeowners deserve dignity, not pressure from flippers
+8. **Private preferences, public respect** — Community filters are private and never create visible exclusion
+9. **Warmth over efficiency** — Warm terracotta palette, serif headlines, generous spacing, no urgency
+
+## Important Notes
+
+- **No MLS dependency.** All listings are user-generated. No MLS data import.
+- **Fair Housing Act compliance is critical.** The resonance engine must be audited for proxy-discrimination.
+- **State-specific legal templates** require attorney review. Launch with CA, TX, FL, NY, WA.
+- **Price is not shown on listing cards.** This is an intentional design decision (stories over shopping).
+- **First contact is structured.** Buyer profile is auto-attached. No anonymous inquiries.
+- **Vouch limits.** Each user can provide max 10 vouches. Vouches expire after 2 years.
+- **Group size limit.** Max 6 co-buyers per group (initial limit).
+
+## Change Tracking
+
+Update `timeline.md` in the project root after every development session.
