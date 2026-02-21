@@ -1,0 +1,29 @@
+{
+  "name": "@humanhomes/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "fastify": "^5.2.0",
+    "@fastify/cors": "^11.0.0",
+    "@trpc/server": "^11.0.0",
+    "@clerk/backend": "^1.22.0",
+    "@humanhomes/trpc": "workspace:*",
+    "@humanhomes/db": "workspace:*",
+    "@humanhomes/shared": "workspace:*",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@humanhomes/config": "workspace:*",
+    "tsx": "^4.19.0",
+    "typescript": "^5.9.0"
+  }
+}

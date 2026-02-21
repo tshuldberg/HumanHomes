@@ -1,0 +1,45 @@
+{
+  "name": "@humanhomes/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "ios": "expo run:ios",
+    "android": "expo run:android",
+    "dev": "expo start --dev-client",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint app/ src/",
+    "clean": "rm -rf .expo node_modules"
+  },
+  "dependencies": {
+    "expo": "~54.0.0",
+    "expo-router": "~4.0.0",
+    "expo-linking": "~7.0.0",
+    "expo-constants": "~17.0.0",
+    "expo-status-bar": "~2.0.0",
+    "expo-secure-store": "~14.0.0",
+    "react": "^19.0.0",
+    "react-native": "^0.79.0",
+    "react-native-safe-area-context": "^5.0.0",
+    "react-native-screens": "^4.5.0",
+    "react-native-gesture-handler": "^2.21.0",
+    "@clerk/clerk-expo": "^2.10.0",
+    "@expo/vector-icons": "^14.0.0",
+    "nativewind": "^4.2.2",
+    "@trpc/client": "^11.0.0",
+    "@trpc/react-query": "^11.0.0",
+    "@tanstack/react-query": "^5.62.0",
+    "@humanhomes/api-client": "workspace:*",
+    "@humanhomes/shared": "workspace:*",
+    "@humanhomes/trpc": "workspace:*",
+    "@humanhomes/ui": "workspace:*"
+  },
+  "devDependencies": {
+    "@humanhomes/config": "workspace:*",
+    "@types/react": "^19.0.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.9.0"
+  }
+}

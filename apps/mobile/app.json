@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "HumanHomes",
+    "slug": "humanhomes",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "humanhomes",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.humanhomes.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FAF7F2"
+      },
+      "package": "com.humanhomes.app"
+    },
+    "plugins": ["expo-router", "expo-secure-store"]
+  }
+}

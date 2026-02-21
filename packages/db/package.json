@@ -1,0 +1,32 @@
+{
+  "name": "@humanhomes/db",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema/index.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
+    "push": "drizzle-kit push",
+    "studio": "drizzle-kit studio",
+    "lint": "eslint src/",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.39.0",
+    "postgres": "^3.4.0",
+    "@humanhomes/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@humanhomes/config": "workspace:*",
+    "drizzle-kit": "^0.30.0",
+    "typescript": "^5.9.0"
+  }
+}

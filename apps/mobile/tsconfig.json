@@ -1,0 +1,12 @@
+{
+  "extends": "../../packages/config/typescript/react-native.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "types": ["nativewind/types", "node"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts"],
+  "exclude": ["node_modules"]
+}

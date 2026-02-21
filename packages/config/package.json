@@ -1,0 +1,24 @@
+{
+  "name": "@humanhomes/config",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./eslint/base": "./eslint/base.js",
+    "./eslint/next": "./eslint/next.js",
+    "./eslint/react-native": "./eslint/react-native.js",
+    "./typescript/*": "./typescript/*.json",
+    "./prettier": "./prettier.config.js"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "@eslint/js": "^9.0.0",
+    "typescript-eslint": "^8.0.0",
+    "eslint-plugin-react": "^7.37.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "@next/eslint-plugin-next": "^15.0.0",
+    "eslint-plugin-react-native": "^4.1.0",
+    "prettier": "^3.4.0",
+    "prettier-plugin-tailwindcss": "^0.6.0"
+  }
+}
