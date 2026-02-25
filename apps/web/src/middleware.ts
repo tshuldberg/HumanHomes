@@ -19,8 +19,14 @@ export default async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    // Protected routes: check for dev session cookie
-    // Note: sessionStorage is client-side only, so we also set a cookie from the client
+    // Protected routes: require dev session cookie.
+    const hasDevSession = request.cookies.get(SESSION_COOKIE)?.value === "true";
+    if (!hasDevSession) {
+      const url = new URL("/dev-login", request.url);
+      url.searchParams.set("redirect", pathname);
+      return NextResponse.redirect(url);
+    }
+
     return NextResponse.next();
   }
 

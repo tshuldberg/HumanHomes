@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Pressable, Image } from "react-native";
+import { View, Text, ScrollView, Pressable, Image, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useUser, useAuth } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
@@ -61,6 +61,10 @@ export default function ProfileScreen() {
   const { user } = useUser();
   const { signOut } = useAuth();
   const router = useRouter();
+
+  const showComingSoon = (feature: string) => {
+    Alert.alert(feature, `${feature} settings are coming soon.`);
+  };
 
   const fullName =
     [user?.firstName, user?.lastName].filter(Boolean).join(" ") || "Homeowner";
@@ -139,19 +143,19 @@ export default function ProfileScreen() {
           <ProfileRow
             icon="notifications-outline"
             label="Notifications"
-            onPress={() => {}}
+            onPress={() => showComingSoon("Notifications")}
           />
           <View className="border-b border-charcoal/5" />
           <ProfileRow
             icon="lock-closed-outline"
             label="Privacy"
-            onPress={() => {}}
+            onPress={() => showComingSoon("Privacy")}
           />
           <View className="border-b border-charcoal/5" />
           <ProfileRow
             icon="help-circle-outline"
             label="Help & Support"
-            onPress={() => {}}
+            onPress={() => showComingSoon("Help & Support")}
           />
         </ProfileSection>
 

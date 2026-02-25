@@ -1,5 +1,7 @@
 export const dynamic = "force-dynamic";
 
+import Link from "next/link";
+
 export default function SellPage() {
   return (
     <div>
@@ -50,9 +52,12 @@ export default function SellPage() {
             ))}
           </div>
 
-          <button className="w-full py-3.5 text-sm font-semibold bg-sage-500 text-white rounded-xl hover:bg-sage-600 transition-colors">
+          <Link
+            href="/profile"
+            className="w-full inline-flex items-center justify-center py-3.5 text-sm font-semibold bg-sage-500 text-white rounded-xl hover:bg-sage-600 transition-colors"
+          >
             Start Your Listing
-          </button>
+          </Link>
           <p className="text-xs text-charcoal-400 text-center mt-3">
             Listing creation will be available in Phase 2
           </p>

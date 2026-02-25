@@ -28,6 +28,20 @@ HumanHomes is a full real estate operating system that democratizes homeownershi
 - **Public Records:** ATTOM Data API
 - **Hosting:** Railway (MVP) > AWS (scale)
 
+## TypeScript Requirement
+
+- TypeScript-first across all apps and packages in this project.
+- New runtime code should be .ts/.tsx with strict typing and no implicit any.
+- Use .js/.cjs only where required by tooling or platform constraints.
+
+## Agent Instructions and Tooling
+
+- Persistent agent instructions are stored in both AGENTS.md and CLAUDE.md. Keep them in sync when rules change.
+- Global Codex skills are sourced from /Users/trey/.codex/skills (67 skills verified on 2026-02-24).
+- In-repo skill snapshot is tracked in .claude/skills-available.md.
+- Plugin/MCP availability and re-verification steps are tracked in .claude/plugins.md.
+- Local execution allow-list settings live in .claude/settings.local.json.
+
 ## Key Commands
 
 ```bash
@@ -135,6 +149,25 @@ Inverted marketplace: professionals (realtors, brokers, inspectors, attorneys) p
 - **First contact is structured.** Buyer profile is auto-attached. No anonymous inquiries.
 - **Vouch limits.** Each user can provide max 10 vouches. Vouches expire after 2 years.
 - **Group size limit.** Max 6 co-buyers per group (initial limit).
+
+## Context7 — Live Documentation
+
+When writing or modifying code that uses external libraries, automatically use Context7 MCP tools (`resolve-library-id` → `query-docs`) to fetch current documentation instead of relying on training data.
+
+**Pre-resolved library IDs for this project:**
+- Next.js: `/vercel/next.js`
+- Expo: `/expo/expo`
+- tRPC: `/trpc/trpc`
+- Drizzle ORM: `/drizzle-team/drizzle-orm`
+- Zod: `/colinhacks/zod`
+- Supabase (Realtime): `/supabase/supabase`
+- Clerk: `/clerk/javascript`
+- TanStack Query: `/tanstack/query`
+- Zustand: `/pmndrs/zustand`
+- Vitest: `/vitest-dev/vitest`
+
+Use when: implementing library APIs, upgrading dependencies, debugging API behavior, writing framework configuration.
+Skip when: pure business logic, editing docs/config with no framework dependency.
 
 ## Change Tracking
 

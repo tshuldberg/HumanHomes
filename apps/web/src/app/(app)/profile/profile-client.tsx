@@ -6,6 +6,8 @@ import { useState } from "react";
 export default function ProfileClient() {
   const { user, isLoaded } = useDevAuth();
   const [role, setRole] = useState<"buyer" | "seller">("buyer");
+  const [story, setStory] = useState("");
+  const [isSaved, setIsSaved] = useState(false);
 
   if (!isLoaded) {
     return (
@@ -102,6 +104,11 @@ export default function ProfileClient() {
         <textarea
           className="w-full rounded-xl border border-charcoal-200 bg-warm-white px-4 py-3 text-charcoal-800 placeholder-charcoal-300 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:border-sage-400 transition-colors resize-none"
           rows={4}
+          value={story}
+          onChange={(event) => {
+            setStory(event.target.value);
+            setIsSaved(false);
+          }}
           placeholder={
             role === "buyer"
               ? "I'm a teacher and parent of two, looking for a home with a yard where the kids can play..."
@@ -109,10 +116,19 @@ export default function ProfileClient() {
           }
         />
         <div className="mt-4 flex justify-end">
-          <button className="px-6 py-2.5 text-sm font-semibold bg-terracotta-500 text-white rounded-xl hover:bg-terracotta-600 transition-colors">
+          <button
+            type="button"
+            onClick={() => setIsSaved(true)}
+            className="px-6 py-2.5 text-sm font-semibold bg-terracotta-500 text-white rounded-xl hover:bg-terracotta-600 transition-colors"
+          >
             Save Profile
           </button>
         </div>
+        {isSaved ? (
+          <p className="mt-3 text-sm text-sage-600" role="status">
+            Profile saved locally.
+          </p>
+        ) : null}
       </div>
     </div>
   );

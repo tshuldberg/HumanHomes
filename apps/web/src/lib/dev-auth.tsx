@@ -27,6 +27,24 @@ const DEV_USER: DevUser = {
 };
 
 const SESSION_KEY = "humanhomes_dev_session";
+const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
+
+function readSessionCookie(): boolean {
+  if (typeof document === "undefined") return false;
+  return document.cookie
+    .split(";")
+    .map((part) => part.trim())
+    .some((part) => part === `${SESSION_KEY}=true`);
+}
+
+function writeSessionCookie(isSignedIn: boolean): void {
+  if (typeof document === "undefined") return;
+  if (isSignedIn) {
+    document.cookie = `${SESSION_KEY}=true; Path=/; Max-Age=${SESSION_MAX_AGE_SECONDS}; SameSite=Lax`;
+    return;
+  }
+  document.cookie = `${SESSION_KEY}=; Path=/; Max-Age=0; SameSite=Lax`;
+}
 
 const DevAuthCtx = createContext<DevAuthContext>({
   isLoaded: false,
@@ -41,13 +59,21 @@ export function DevAuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    setIsSignedIn(sessionStorage.getItem(SESSION_KEY) === "true");
+    const hasSessionStorage = sessionStorage.getItem(SESSION_KEY) === "true";
+    const hasCookie = readSessionCookie();
+    const nextSignedIn = hasSessionStorage || hasCookie;
+    if (nextSignedIn) {
+      sessionStorage.setItem(SESSION_KEY, "true");
+      writeSessionCookie(true);
+    }
+    setIsSignedIn(nextSignedIn);
     setIsLoaded(true);
   }, []);
 
   const signIn = useCallback((username: string, password: string) => {
     if (username === "admin" && password === "admin") {
       sessionStorage.setItem(SESSION_KEY, "true");
+      writeSessionCookie(true);
       setIsSignedIn(true);
       return true;
     }
@@ -56,6 +82,7 @@ export function DevAuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = useCallback(() => {
     sessionStorage.removeItem(SESSION_KEY);
+    writeSessionCookie(false);
     setIsSignedIn(false);
   }, []);
 

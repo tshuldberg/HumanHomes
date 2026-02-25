@@ -1,3 +1,7 @@
+"use client";
+
+import { useMemo, useState } from "react";
+
 export const dynamic = "force-dynamic";
 
 const neighborhoods = [
@@ -36,6 +40,40 @@ const neighborhoods = [
 ];
 
 export default function DiscoverPage() {
+  const [selectedPrefs, setSelectedPrefs] = useState<string[]>([]);
+
+  const preferenceOptions = [
+    "Walkable streets",
+    "Yard space",
+    "Quiet streets",
+    "Community gardens",
+    "Close to nature",
+    "Family-friendly",
+    "Arts & culture",
+    "Local shops",
+    "Diverse community",
+  ];
+
+  const filteredNeighborhoods = useMemo(() => {
+    if (selectedPrefs.length === 0) return neighborhoods;
+
+    return neighborhoods.filter((neighborhood) =>
+      selectedPrefs.every((pref) =>
+        neighborhood.tags.some(
+          (tag) => tag.toLowerCase() === pref.toLowerCase(),
+        ),
+      ),
+    );
+  }, [selectedPrefs]);
+
+  const togglePreference = (pref: string) => {
+    setSelectedPrefs((current) =>
+      current.includes(pref)
+        ? current.filter((item) => item !== pref)
+        : [...current, pref],
+    );
+  };
+
   return (
     <div>
       <div className="mb-10">
@@ -53,30 +91,27 @@ export default function DiscoverPage() {
           What draws you to a neighborhood?
         </p>
         <div className="flex flex-wrap gap-2">
-          {[
-            "Walkable streets",
-            "Yard space",
-            "Quiet streets",
-            "Community gardens",
-            "Close to nature",
-            "Family-friendly",
-            "Arts & culture",
-            "Local shops",
-            "Diverse community",
-          ].map((pref) => (
+          {preferenceOptions.map((pref) => {
+            const selected = selectedPrefs.includes(pref);
+            return (
             <button
               key={pref}
+              type="button"
+              onClick={() => togglePreference(pref)}
+              aria-pressed={selected}
               className="px-4 py-2 text-sm rounded-xl border border-charcoal-200 text-charcoal-600 hover:border-terracotta-400 hover:text-terracotta-600 hover:bg-terracotta-50 transition-colors"
+              data-selected={selected ? "true" : "false"}
             >
               {pref}
             </button>
-          ))}
+            );
+          })}
         </div>
       </div>
 
       {/* Neighborhood cards */}
       <div className="grid md:grid-cols-2 gap-6">
-        {neighborhoods.map((n) => (
+        {filteredNeighborhoods.map((n) => (
           <div
             key={n.name}
             className="bg-white rounded-2xl p-8 shadow-soft border border-charcoal-50 hover:shadow-soft-lg transition-shadow group cursor-pointer"
@@ -122,6 +157,11 @@ export default function DiscoverPage() {
           </div>
         ))}
       </div>
+      {filteredNeighborhoods.length === 0 ? (
+        <p className="mt-6 text-sm text-charcoal-500">
+          No neighborhoods match all selected preferences yet.
+        </p>
+      ) : null}
     </div>
   );
 }
