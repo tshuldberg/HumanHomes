@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { Alert, View, Text, ScrollView, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useUser } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
@@ -31,13 +31,15 @@ function NeighborhoodCard({
   name,
   tagline,
   tags,
+  onPress,
 }: {
   name: string;
   tagline: string;
   tags: string[];
+  onPress?: () => void;
 }) {
   return (
-    <Pressable className="mb-4 rounded-2xl bg-white p-5 shadow-sm">
+    <Pressable className="mb-4 rounded-2xl bg-white p-5 shadow-sm" onPress={onPress}>
       <View className="mb-3 h-32 items-center justify-center rounded-xl bg-terracotta/10">
         <Ionicons name="map-outline" size={36} color="#C4704B" />
       </View>
@@ -61,6 +63,9 @@ function NeighborhoodCard({
 export default function DiscoverScreen() {
   const { user } = useUser();
   const greeting = user?.firstName ? `Welcome, ${user.firstName}` : "Welcome";
+  const handleNeighborhoodPress = (name: string) => {
+    Alert.alert(name, "Neighborhood details are coming in an upcoming release.");
+  };
 
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-warm-white">
@@ -113,16 +118,19 @@ export default function DiscoverScreen() {
             name="Temescal, Oakland"
             tagline="A tight-knit community of families, artists, and longtime residents who know each other by name."
             tags={["Walkable", "Community Gardens", "Local Shops"]}
+            onPress={() => handleNeighborhoodPress("Temescal, Oakland")}
           />
           <NeighborhoodCard
             name="Sellwood, Portland"
             tagline="Every block has a little free library. The farmers market is walking distance."
             tags={["Yard Space", "Family-Friendly", "Quiet Streets"]}
+            onPress={() => handleNeighborhoodPress("Sellwood, Portland")}
           />
           <NeighborhoodCard
             name="Noe Valley, San Francisco"
             tagline="Strollers on every sidewalk, sunshine most afternoons, and a bakery on every corner."
             tags={["Walkable", "Family-Friendly", "Close to Nature"]}
+            onPress={() => handleNeighborhoodPress("Noe Valley, San Francisco")}
           />
         </View>
       </ScrollView>

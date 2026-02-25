@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useDevAuth } from "@/lib/dev-auth";
 
@@ -11,12 +11,18 @@ export default function DevLoginPage() {
   const [error, setError] = useState("");
   const { signIn } = useDevAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     if (signIn(username, password)) {
-      router.push("/discover");
+      const requestedRedirect = searchParams.get("redirect");
+      const safeRedirect =
+        requestedRedirect && requestedRedirect.startsWith("/")
+          ? requestedRedirect
+          : "/discover";
+      router.push(safeRedirect);
     } else {
       setError("Invalid credentials");
     }
