@@ -1,4 +1,4 @@
-import { getDefaultConfig } from "expo/metro-config";
+import { getDefaultConfig } from "expo/metro-config.js";
 import { resolve } from "path";
 
 const projectRoot = import.meta.dirname;
