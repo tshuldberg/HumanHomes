@@ -30,3 +30,21 @@
   - Created `Providers` client component for graceful Clerk fallback during SSG
   - Added `force-dynamic` to all auth-gated pages for clean static/dynamic split
 - **Build verification**: All 13 typecheck tasks pass, all 7 build tasks pass (packages + apps)
+
+## 2026-02-26 — Dev Workflow Fixes
+
+### Entry 2.1 — Root Dev Startup and Mobile Metro Resolution
+**Phase:** Developer Experience / Local Runtime
+**What happened:** Fixed root `pnpm dev` startup by installing `turbo` at the workspace root, then fixed mobile Metro ESM resolution by changing the import to `expo/metro-config.js`.
+**Decision:** Keep root scripts (`turbo run ...`) and enforce local tool availability via root `devDependencies` so startup does not depend on globally installed CLIs. Keep Metro config in ESM-safe form for current Node/Expo resolution behavior.
+**Files created/modified:** `package.json`, `pnpm-lock.yaml`, `apps/mobile/metro.config.js`, `timeline.md`
+
+#### Confusion Point 1 (re-review of 2026-02-20 Integration fixes): Toolchain compatibility drift
+**Updated finding:** Prior fixes addressed framework API mismatches; this session confirmed the same risk exists for tooling resolution and module specifier format. Pinning required CLIs in the workspace and using explicit ESM specifiers prevented repeat startup failures.
+
+**Skill opportunity:** Add a reusable "dev startup doctor" script that checks required root CLIs, validates env vars, and probes key ports before running `turbo`.
+
+### Next Steps
+- Add a `.env` setup for local API runtime (`DATABASE_URL`, `CLERK_SECRET_KEY`) and verify API health endpoint on startup.
+- Decide whether root `pnpm dev` should be fail-fast when API env vars are missing, or allow web/mobile to continue while API retries.
+- Silence the Next.js workspace-root warning by setting `turbopack.root` in web config.
