@@ -1,6 +1,6 @@
 "use client";
 
-import { useDevAuth } from "@/lib/dev-auth";
+import { useDevAuth } from "../../../lib/dev-auth";
 import { useState } from "react";
 
 export default function ProfileClient() {
