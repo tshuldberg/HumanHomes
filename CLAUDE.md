@@ -140,6 +140,31 @@ Inverted marketplace: professionals (realtors, brokers, inspectors, attorneys) p
 8. **Private preferences, public respect** — Community filters are private and never create visible exclusion
 9. **Warmth over efficiency** — Warm terracotta palette, serif headlines, generous spacing, no urgency
 
+## File Ownership Zones (Parallel Agent Work)
+
+| Zone | Owner | Files |
+|------|-------|-------|
+| Root configs | lead | `package.json`, `turbo.json`, `pnpm-workspace.yaml` |
+| Web App | web-dev | `apps/web/**` |
+| Mobile App | mobile-dev | `apps/mobile/**` |
+| API Server | api-dev | `apps/api/**` |
+| Database | db-dev | `packages/db/**` |
+| Shared types | shared-dev | `packages/shared/**` |
+| tRPC Router | trpc-dev | `packages/trpc/**` |
+| UI Package | ui-dev | `packages/ui/**` |
+| Tests | tester | `**/*.test.ts`, `**/*.test.tsx` |
+| Docs | docs-dev | `CLAUDE.md`, `AGENTS.md`, `timeline.md`, `docs/**` |
+
+## Agent Teams Strategy
+
+When 2+ plans target this project with overlapping scope, use an Agent Team instead of parallel subagents. Custom agent definitions from `/Users/trey/Desktop/Apps/.claude/agents/` and `/Users/trey/Desktop/Apps/MyLife/.claude/agents/`:
+- `plan-executor` -- Execute plan phases with testing and verification
+- `test-writer` -- Write tests without modifying source code
+- `docs-agent` -- Update documentation
+- `reviewer` -- Read-only code review (uses Sonnet)
+
+Agents working in different File Ownership Zones can run in parallel without conflicts. Agents sharing a zone must coordinate via the team task list.
+
 ## Important Notes
 
 - **No MLS dependency.** All listings are user-generated. No MLS data import.
@@ -172,3 +197,7 @@ Skip when: pure business logic, editing docs/config with no framework dependency
 ## Change Tracking
 
 Update `timeline.md` in the project root after every development session.
+
+
+## Writing Style
+- Do not use em dashes in documents or writing.
